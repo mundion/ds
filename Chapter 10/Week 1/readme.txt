@@ -1,0 +1,1 @@
+This week gives us a primary introduction into the projects topic.
