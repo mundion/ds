@@ -1,0 +1,51 @@
+1.
+%sql SELECT COUNT(id) as "Total_Number_of_Crimes" FROM CRIME_DATA
+
+2.
+%sql SELECT * FROM CENSUS_DATA WHERE per_capita_income < 11000
+
+3.
+%sql SELECT case_number FROM CRIME_DATA WHERE LCASE(description) LIKE '%minor%'
+
+4.
+%sql SELECT * FROM CRIME_DATA WHERE LCASE(description) LIKE '%abduction%' AND LCASE(description) LIKE '%child%'
+
+5.
+%sql SELECT * FROM CRIME_DATA WHERE location_description LIKE '%SCHOOL%'
+
+6.
+%sql SELECT "Elementary, Middle, or High School", AVG(safety_score) as "Average Safety Score" FROM PUBLIC_SCHOOLS GROUP BY "Elementary, Middle, or High School"
+
+7. 
+%sql SELECT community_area_name, percent_households_below_poverty  FROM CENSUS_DATA ORDER BY percent_households_below_poverty DESC LIMIT 5
+
+8.
+%%sql
+SELECT community_area_name as "Community Area Name" 
+    FROM(
+        SELECT * FROM (SELECT community_area_number as CAN1 , COUNT(*) as "Crime Count" 
+                       FROM CRIME_DATA 
+                       GROUP BY community_area_number 
+                       ORDER BY community_area_number) 
+            CROSS JOIN (SELECT community_area_number as CAN2, community_area_name 
+                        FROM CENSUS_DATA 
+                        ORDER BY community_area_number) 
+        WHERE CAN1 = CAN2 ORDER BY "Crime Count" DESC LIMIT 1)
+		
+9.
+%%sql
+SELECT community_area_name FROM CENSUS_DATA WHERE (hardship_index IS NOT NULL) ORDER BY hardship_index DESC LIMIT 1
+
+
+10.
+%%sql
+SELECT community_area_name as "Community Area Name" 
+    FROM(
+        SELECT * FROM (SELECT community_area_number as CAN1 , COUNT(*) as "Crime Count" 
+                       FROM CRIME_DATA 
+                       GROUP BY community_area_number 
+                       ORDER BY community_area_number) 
+            CROSS JOIN (SELECT community_area_number as CAN2, community_area_name 
+                        FROM CENSUS_DATA 
+                        ORDER BY community_area_number) 
+        WHERE CAN1 = CAN2 ORDER BY "Crime Count" DESC LIMIT 1)
